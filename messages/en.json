@@ -1,0 +1,95 @@
+{
+  "site": {
+    "name": "Edwin Figueroa",
+    "description": "Senior Full-Stack Engineer (React · Node.js · TypeScript) based in El Salvador. Personal portfolio and blog."
+  },
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "about": "About",
+    "blog": "Blog"
+  },
+  "home": {
+    "heroEyebrow": "Hi, I'm",
+    "heroName": "Edwin Figueroa",
+    "heroRole": "Senior Full-Stack Engineer · React · Node.js · TypeScript",
+    "heroTagline": "6+ years building and shipping web and mobile apps for banking, fintech and automotive clients. Specialized in React and Node.js, with solid Java/Spring Boot backend foundations.",
+    "ctaProjects": "View projects",
+    "ctaCV": "Download CV",
+    "ctaContact": "Get in touch",
+    "featuredTitle": "Featured projects",
+    "featuredSubtitle": "A selection of recent work.",
+    "latestPostsTitle": "Latest from the blog",
+    "latestPostsSubtitle": "Technical notes and learnings.",
+    "viewAll": "View all"
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "Apps I've built — from demos to production projects.",
+    "filterAll": "All",
+    "viewRepo": "Repository",
+    "viewDemo": "Demo",
+    "empty": "No projects match this filter."
+  },
+  "about": {
+    "title": "About me",
+    "subtitle": "Computer Systems Engineer from the University of El Salvador.",
+    "bio": "I'm a Computer Systems Engineer with 6+ years of experience building and shipping web and mobile applications for banking, fintech, manufacturing and automotive clients. I specialize in the React and Node.js ecosystem, with solid backend foundations in Java/Spring Boot and SQL/NoSQL databases. I enjoy the entire process — from analysis to deployment — with a focus on performance, accessibility and maintainability. I'm currently pursuing an AI Expert Engineer specialization (2025–2026).",
+    "skillsTitle": "Tech stack",
+    "skillsFrontend": "Frontend",
+    "skillsBackend": "Backend",
+    "skillsDatabases": "Databases",
+    "skillsMobile": "Mobile",
+    "skillsDevops": "DevOps & tools",
+    "experienceTitle": "Experience",
+    "educationTitle": "Education",
+    "certificationsTitle": "Certifications",
+    "inProgress": "In progress",
+    "present": "Present",
+    "contactTitle": "Let's talk",
+    "contactSubtitle": "Got an idea, a role, or a project? Drop me a line and I'll get back to you soon."
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Technical notes, tutorials, and thoughts.",
+    "readMore": "Read more",
+    "minRead": "{minutes} min read",
+    "publishedOn": "Published on {date}",
+    "tags": "Tags",
+    "filterAll": "All",
+    "empty": "No posts yet.",
+    "backToList": "← Back to blog"
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "you@email.com",
+    "messagePlaceholder": "Tell me about your project…",
+    "submit": "Send message",
+    "submitting": "Sending…",
+    "success": "Message sent! I'll get back to you soon.",
+    "error": "Something went wrong. Please try again later.",
+    "errorRequired": "This field is required",
+    "errorEmail": "Invalid email",
+    "errorTooShort": "Message is too short",
+    "errorRateLimit": "Too many submissions. Please wait a moment."
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "rss": "RSS",
+    "builtWith": "Built with Next.js"
+  },
+  "common": {
+    "themeLight": "Light theme",
+    "themeDark": "Dark theme",
+    "themeSystem": "System theme",
+    "switchLocale": "Switch language"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or was moved.",
+    "back": "Back to home"
+  }
+}

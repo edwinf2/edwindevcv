@@ -1,0 +1,95 @@
+{
+  "site": {
+    "name": "Edwin Figueroa",
+    "description": "Ingeniero de Software Full-Stack Senior (React · Node.js · TypeScript) basado en El Salvador. Portafolio personal y blog."
+  },
+  "nav": {
+    "home": "Inicio",
+    "projects": "Proyectos",
+    "about": "Sobre mí",
+    "blog": "Blog"
+  },
+  "home": {
+    "heroEyebrow": "Hola, soy",
+    "heroName": "Edwin Figueroa",
+    "heroRole": "Ingeniero de Software Full-Stack Senior · React · Node.js · TypeScript",
+    "heroTagline": "Más de 6 años construyendo y desplegando aplicaciones web y móviles para clientes de banca, fintech y sector automotriz. Especializado en React y Node.js, con bases sólidas de backend en Java/Spring Boot.",
+    "ctaProjects": "Ver proyectos",
+    "ctaCV": "Descargar CV",
+    "ctaContact": "Contáctame",
+    "featuredTitle": "Proyectos destacados",
+    "featuredSubtitle": "Una selección de trabajo reciente.",
+    "latestPostsTitle": "Últimas publicaciones",
+    "latestPostsSubtitle": "Notas técnicas y aprendizajes.",
+    "viewAll": "Ver todos"
+  },
+  "projects": {
+    "title": "Proyectos",
+    "subtitle": "Aplicaciones que he construido, desde demos hasta proyectos en producción.",
+    "filterAll": "Todos",
+    "viewRepo": "Repositorio",
+    "viewDemo": "Demo",
+    "empty": "No hay proyectos para este filtro."
+  },
+  "about": {
+    "title": "Sobre mí",
+    "subtitle": "Ingeniero en Sistemas Informáticos por la Universidad de El Salvador.",
+    "bio": "Soy Ingeniero en Sistemas Informáticos con más de 6 años de experiencia construyendo y desplegando aplicaciones web y móviles para clientes de banca, fintech, manufactura y sector automotriz. Especializado en el ecosistema React y Node.js, con bases sólidas de backend en Java/Spring Boot y bases de datos SQL/NoSQL. Disfruto el proceso completo: del análisis al despliegue, cuidando rendimiento, accesibilidad y mantenibilidad. Actualmente curso una especialización como AI Expert Engineer (2025–2026).",
+    "skillsTitle": "Stack técnico",
+    "skillsFrontend": "Frontend",
+    "skillsBackend": "Backend",
+    "skillsDatabases": "Bases de datos",
+    "skillsMobile": "Móvil",
+    "skillsDevops": "DevOps y herramientas",
+    "experienceTitle": "Experiencia",
+    "educationTitle": "Educación",
+    "certificationsTitle": "Certificaciones",
+    "inProgress": "En curso",
+    "present": "Actualidad",
+    "contactTitle": "Hablemos",
+    "contactSubtitle": "¿Tienes una idea, un puesto o un proyecto? Escríbeme y te respondo pronto."
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Notas técnicas, tutoriales y reflexiones.",
+    "readMore": "Leer más",
+    "minRead": "{minutes} min de lectura",
+    "publishedOn": "Publicado el {date}",
+    "tags": "Etiquetas",
+    "filterAll": "Todas",
+    "empty": "No hay publicaciones aún.",
+    "backToList": "← Volver al blog"
+  },
+  "contact": {
+    "name": "Nombre",
+    "email": "Email",
+    "message": "Mensaje",
+    "namePlaceholder": "Tu nombre",
+    "emailPlaceholder": "tu@email.com",
+    "messagePlaceholder": "Cuéntame sobre tu proyecto…",
+    "submit": "Enviar mensaje",
+    "submitting": "Enviando…",
+    "success": "¡Mensaje enviado! Te respondo pronto.",
+    "error": "Algo falló. Intenta de nuevo más tarde.",
+    "errorRequired": "Este campo es obligatorio",
+    "errorEmail": "Email no válido",
+    "errorTooShort": "El mensaje es demasiado corto",
+    "errorRateLimit": "Demasiados envíos. Espera un momento."
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "rss": "RSS",
+    "builtWith": "Construido con Next.js"
+  },
+  "common": {
+    "themeLight": "Tema claro",
+    "themeDark": "Tema oscuro",
+    "themeSystem": "Tema del sistema",
+    "switchLocale": "Cambiar idioma"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o ha sido movida.",
+    "back": "Volver al inicio"
+  }
+}
