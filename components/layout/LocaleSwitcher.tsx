@@ -5,7 +5,12 @@ import { usePathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
-export function LocaleSwitcher() {
+interface LocaleSwitcherProps {
+  // Callback opcional al elegir idioma (p. ej. cerrar el drawer móvil antes de navegar).
+  onSelect?: () => void;
+}
+
+export function LocaleSwitcher({ onSelect }: LocaleSwitcherProps) {
   const locale = useLocale();
   const pathname = usePathname();
 
@@ -23,6 +28,7 @@ export function LocaleSwitcher() {
           <a
             key={l}
             href={href}
+            onClick={onSelect}
             aria-current={active ? "true" : undefined}
             className={cn(
               "h-7 inline-flex items-center rounded-full px-2 text-xs font-medium uppercase transition-colors",

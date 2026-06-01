@@ -4,14 +4,9 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { ThemeToggle } from "./ThemeToggle";
 import { LocaleSwitcher } from "./LocaleSwitcher";
+import { MobileNav } from "./MobileNav";
+import { navLinks, isNavLinkActive } from "./nav-links";
 import { cn } from "@/lib/utils";
-
-const links = [
-  { href: "/", key: "home" },
-  { href: "/projects", key: "projects" },
-  { href: "/about", key: "about" },
-  { href: "/blog", key: "blog" },
-] as const;
 
 export function Navbar() {
   const t = useTranslations("nav");
@@ -26,12 +21,9 @@ export function Navbar() {
         >
           Edwin Figueroa
         </Link>
-        <ul className="hidden items-center gap-1 sm:flex">
-          {links.map((link) => {
-            const active =
-              link.href === "/"
-                ? pathname === "/"
-                : pathname === link.href || pathname.startsWith(`${link.href}/`);
+        <ul className="hidden items-center gap-1 md:flex">
+          {navLinks.map((link) => {
+            const active = isNavLinkActive(pathname, link.href);
             return (
               <li key={link.href}>
                 <Link
@@ -50,8 +42,12 @@ export function Navbar() {
           })}
         </ul>
         <div className="flex items-center gap-2">
-          <LocaleSwitcher />
+          {/* Selector de idioma: en móvil va dentro del drawer (MobileNav). */}
+          <div className="hidden md:block">
+            <LocaleSwitcher />
+          </div>
           <ThemeToggle />
+          <MobileNav />
         </div>
       </nav>
     </header>

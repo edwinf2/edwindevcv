@@ -85,7 +85,10 @@
     "themeLight": "Light theme",
     "themeDark": "Dark theme",
     "themeSystem": "System theme",
-    "switchLocale": "Switch language"
+    "switchLocale": "Switch language",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "notFound": {
     "title": "Page not found",

@@ -85,7 +85,10 @@
     "themeLight": "Tema claro",
     "themeDark": "Tema oscuro",
     "themeSystem": "Tema del sistema",
-    "switchLocale": "Cambiar idioma"
+    "switchLocale": "Cambiar idioma",
+    "menu": "Menú",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú"
   },
   "notFound": {
     "title": "Página no encontrada",
