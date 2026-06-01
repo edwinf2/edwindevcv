@@ -54,15 +54,6 @@ npm run dev
 
 Abre [http://localhost:3000](http://localhost:3000).
 
-### Variables de entorno
-
-| Variable           | Descripción                                                        | Requerida              |
-| ------------------ | ------------------------------------------------------------------ | ---------------------- |
-| `SITE_URL`         | URL base del sitio (usada en SEO, OG, sitemap y canónicas).        | Sí (en producción)     |
-| `RESEND_API_KEY`   | Clave de [Resend](https://resend.com) para enviar el formulario.   | Sí (para el contacto)  |
-| `CONTACT_TO_EMAIL` | Correo que recibe los mensajes del formulario de contacto.         | Sí (para el contacto)  |
-
-> El archivo `.env` está en `.gitignore`. **Nunca** subas tus claves al repositorio.
 
 ### Scripts
 
@@ -89,8 +80,6 @@ lib/               utilidades y servicios (seo, projects, blog, mdx, site, utils
 messages/          en.json · es.json
 public/            cv-es.pdf · cv-en.pdf · iconos · images/
 ```
-
-> Las reglas y convenciones del proyecto viven en **[`AGENTS.md`](./AGENTS.md)** (única fuente de verdad; `CLAUDE.md` la hereda).
 
 ### Despliegue
 
@@ -144,16 +133,6 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-### Environment variables
-
-| Variable           | Description                                                       | Required             |
-| ------------------ | ---------------------------------------------------------------- | -------------------- |
-| `SITE_URL`         | Site base URL (used for SEO, OG, sitemap and canonicals).        | Yes (in production)  |
-| `RESEND_API_KEY`   | [Resend](https://resend.com) API key to send the contact form.  | Yes (for contact)    |
-| `CONTACT_TO_EMAIL` | Email address that receives contact-form messages.              | Yes (for contact)    |
-
-> `.env` is in `.gitignore`. **Never** commit your keys.
-
 ### Scripts
 
 ```bash
@@ -179,8 +158,6 @@ lib/               utilities and services (seo, projects, blog, mdx, site, utils
 messages/          en.json · es.json
 public/            cv-es.pdf · cv-en.pdf · icons · images/
 ```
-
-> Project rules and conventions live in **[`AGENTS.md`](./AGENTS.md)** (single source of truth; inherited by `CLAUDE.md`).
 
 ### Deployment
 
