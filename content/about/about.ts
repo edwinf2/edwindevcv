@@ -48,11 +48,14 @@ export const skills: SkillGroup[] = [
   {
     group: "devops",
     skills: [
+      "Conocimientos de AWS Cloud (EC2, Lambda, RDS, VPC)",
+      "Conocimientos de Infrastructure as Code (Terraform y CloudFormation)",
       "Git",
       "GitHub",
       "Docker",
       "CI/CD",
       "Linux",
+      "Kubernates",
       "Netlify",
       "Vercel",
       "Tomcat",
