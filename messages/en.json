@@ -1,7 +1,7 @@
 {
   "site": {
     "name": "Edwin Figueroa",
-    "description": "Senior Full-Stack Engineer (React · Node.js · TypeScript) based in El Salvador. Personal portfolio and blog."
+    "description": "Senior Full-Stack Engineer (DevOps Engineer) based in El Salvador. Personal portfolio and blog."
   },
   "nav": {
     "home": "Home",
@@ -12,8 +12,8 @@
   "home": {
     "heroEyebrow": "Hi, I'm",
     "heroName": "Edwin Figueroa",
-    "heroRole": "Senior Full-Stack Engineer · React · Node.js · TypeScript",
-    "heroTagline": "6+ years building and shipping web and mobile apps for banking, fintech and automotive clients. Specialized in React and Node.js, with solid Java/Spring Boot backend foundations.",
+    "heroRole": "Senior Full-Stack Engineer · DevOps Engineer",
+    "heroTagline": "6+ years building and shipping web and mobile apps for banking, fintech and automotive clients. Specialized in React and Node.js, with solid Java/Spring Boot backend foundations. Experience working with Linux environments, Docker containers, Kubernetes, Git/GitHub and cloud platforms like AWS. Knowledge in infrastructure as code using Terraform and CloudFormation, AWS service administration and DevOps practices oriented to automation and continuous delivery. Ability to collaborate between development and infrastructure teams to ensure scalable, secure and highly available applications.",
     "ctaProjects": "View projects",
     "ctaCV": "Download CV",
     "ctaContact": "Get in touch",
@@ -34,7 +34,7 @@
   "about": {
     "title": "About me",
     "subtitle": "Computer Systems Engineer from the University of El Salvador.",
-    "bio": "I'm a Computer Systems Engineer with 6+ years of experience building and shipping web and mobile applications for banking, fintech, manufacturing and automotive clients. I specialize in the React and Node.js ecosystem, with solid backend foundations in Java/Spring Boot and SQL/NoSQL databases. I enjoy the entire process — from analysis to deployment — with a focus on performance, accessibility and maintainability. I'm currently pursuing an AI Expert Engineer specialization (2025–2026).",
+    "bio": "I'm a Computer Systems Engineer with 6+ years of experience building and deploying web and mobile applications for banking, fintech, and automotive clients. Specialized in React and Node.js, with a solid foundation in Java/Spring Boot backend development. Experienced in Linux environments, Docker containers, Kubernetes, Git/GitHub, and cloud platforms such as AWS. Knowledgeable in infrastructure as code using Terraform and CloudFormation, AWS service management, and DevOps practices focused on automation and continuous delivery. Proven ability to collaborate across development and infrastructure teams to ensure scalable, secure, and highly available applications.",
     "skillsTitle": "Tech stack",
     "skillsFrontend": "Frontend",
     "skillsBackend": "Backend",
