@@ -13,7 +13,7 @@
     "heroEyebrow": "Hola, soy",
     "heroName": "Edwin Figueroa",
     "heroRole": "Ingeniero de Software Full-Stack Senior · React · Node.js · TypeScript",
-    "heroTagline": "Más de 6 años construyendo y desplegando aplicaciones web y móviles para clientes de banca, fintech y sector automotriz. Especializado en React y Node.js, con bases sólidas de backend en Java/Spring Boot.",
+    "heroTagline": "Más de 6 años construyendo y desplegando aplicaciones web y móviles para clientes de banca, fintech y sector automotriz. Especializado en React y Node.js, con bases sólidas de backend en Java/Spring Boot. Con experiencia trabajando con entornos Linux, contenedores Docker, Kubernetes, Git/GitHub y plataformas cloud como AWS. Con conocimientos en infraestructura como código mediante Terraform y CloudFormation, administración de servicios AWS y prácticas DevOps orientadas a la automatización y entrega continua",
     "ctaProjects": "Ver proyectos",
     "ctaCV": "Descargar CV",
     "ctaContact": "Contáctame",
@@ -34,7 +34,7 @@
   "about": {
     "title": "Sobre mí",
     "subtitle": "Ingeniero en Sistemas Informáticos por la Universidad de El Salvador.",
-    "bio": "Soy Ingeniero en Sistemas Informáticos con más de 6 años de experiencia construyendo y desplegando aplicaciones web y móviles para clientes de banca, fintech, manufactura y sector automotriz. Especializado en el ecosistema React y Node.js, con bases sólidas de backend en Java/Spring Boot y bases de datos SQL/NoSQL. Disfruto el proceso completo: del análisis al despliegue, cuidando rendimiento, accesibilidad y mantenibilidad. Actualmente curso una especialización como AI Expert Engineer (2025–2026).",
+    "bio": "Soy Ingeniero en Sistemas Informáticos con más de 6 años de experiencia construyendo y desplegando aplicaciones web y móviles para clientes de banca, fintech, manufactura y sector automotriz. Especializado en el ecosistema React y Node.js, con bases sólidas de backend en Java/Spring Boot y bases de datos SQL/NoSQL. Disfruto el proceso completo: del análisis al despliegue, cuidando rendimiento, accesibilidad y mantenibilidad. Actualmente curso una especialización como AI Expert Engineer (2025–2026). Con experiencia trabajando con entornos Linux, contenedores Docker, Kubernetes, Git/GitHub y plataformas cloud como AWS. Con conocimientos en infraestructura como código mediante Terraform y CloudFormation, administración de servicios AWS y prácticas DevOps orientadas a la automatización y entrega continua",
     "skillsTitle": "Stack técnico",
     "skillsFrontend": "Frontend",
     "skillsBackend": "Backend",
