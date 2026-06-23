@@ -50,6 +50,7 @@ export const skills: SkillGroup[] = [
     group: "devops",
     skills: [
       "Conocimientos de AWS Cloud (EC2, Lambda, RDS, VPC)",
+      "Conocimientos de Microsoft Azure (App Service, Functions, SQL Database, Virtual Network)",
       "Conocimientos de Infrastructure as Code (Terraform y CloudFormation)",
       "Git",
       "GitHub",
@@ -190,7 +191,7 @@ export const experiences: Experience[] = [
         role: "Especialista en Redes y Soporte Técnico",
         company: "WebHelp · Claro",
         description:
-          "Mantuve la red del Data Center, configuración de VLANs, subredes y firewalls de infraestructura de TI (base directa de conceptos de redes en la nube como VPC, subredes y Security Groups), asegurando conectividad confiable para operaciones empresariales",
+          "Configuración de VLANs, subredes y firewalls de infraestructura de TI (base directa de conceptos de redes en la nube como VPC, subredes y Security Groups)",
         highlights: [
           "Mantuve la red del Data Center, configuración de VLANs, subredes y firewalls de infraestructura de TI (base directa de conceptos de redes en la nube como VPC, subredes y Security Groups), asegurando conectividad confiable para operaciones empresariales.",
           "Brindé soporte técnico y monitoreo de la infraestructura y los servicios de red, diagnosticando y resolviendo incidencias de conectividad para mantener la continuidad operativa de la cuenta."
@@ -200,7 +201,7 @@ export const experiences: Experience[] = [
         role: "Network & IT Support Specialist",
         company: "WebHelp · Claro",
         description:
-          "Maintained the Data Center network, configuring VLANs, subnets, and IT infrastructure firewalls (directly based on cloud networking concepts such as VPCs, subnets, and Security Groups), ensuring reliable connectivity for business operations.",
+          "Configuring VLANs, subnets, and IT infrastructure firewalls (directly based on cloud networking concepts such as VPCs, subnets, and Security Groups).",
         highlights: [
           "Maintained the Data Center network, configuring VLANs, subnets, and IT infrastructure firewalls (a direct foundation for cloud networking concepts such as VPC, subnets, and Security Groups), ensuring reliable connectivity for business operations.",
           "Provided technical support and monitoring of network infrastructure and services, diagnosing and resolving connectivity incidents to maintain the operational continuity of the account."
@@ -210,7 +211,7 @@ export const experiences: Experience[] = [
   },
   {
     id: "xuret",
-    start: "2020-09",
+    start: "2019-01",
     end: "2021-03",
     content: {
       es: {
