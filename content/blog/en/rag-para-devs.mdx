@@ -1,0 +1,85 @@
+---
+title: "RAG for devs: what it is, when to use it, and when it's overengineering"
+description: "Retrieval-Augmented Generation explained without the hype: how it works, when it solves a real problem, and when you're just making life harder."
+date: "2026-06-12"
+tags: ["ai", "rag"]
+cover: "/images/blog/post-03-rag-devs.jpg"
+---
+
+# RAG for devs
+
+RAG — Retrieval-Augmented Generation — is one of those acronyms that sound harder than they
+are. The idea fits in one sentence: **before asking the model something, you hand it the
+relevant documents so it answers based on them** instead of on its general knowledge. That's
+it. The rest is implementation detail.
+
+This guide explains how it works and, more importantly, **when not to use it** — because half
+the projects that build RAG didn't need it.
+
+## The problem it solves
+
+An LLM knows a lot about the world, but nothing about **your** world: your internal docs, your
+tickets, your knowledge base. And even if it did, its knowledge has a cutoff date. Ask it
+"what's our refund policy?" and it invents a plausible but false answer.
+
+RAG fixes this without retraining anything: you retrieve the relevant chunks of your data and
+include them in the prompt. The model answers by reading, not by remembering.
+
+## How it works, in four steps
+
+1. **Index**: split your documents into chunks and, for each one, compute an *embedding* — a
+   vector that represents its meaning. Store them in a vector database.
+2. **Retrieve**: when a question arrives, compute its embedding and search for the chunks with
+   the most similar vectors. Those are the most semantically relevant.
+3. **Augment**: drop those chunks into the prompt, alongside the question.
+4. **Generate**: the model answers using that context.
+
+```text
+user question
+      │
+      ▼
+ [embedding] ──► vector DB search ──► top 3 chunks
+                                            │
+                                            ▼
+        prompt = chunks + question ──► model ──► answer
+```
+
+The trick isn't in the generation — that's a normal model call — it's in **retrieving well**.
+If you retrieve the wrong chunks, the model answers with garbage, but with total confidence.
+
+## When RAG is the right answer
+
+- You have **lots** of your own data that changes often (docs, catalogs, tickets).
+- You need answers to **cite** the real source.
+- The corpus is too large to fit entirely in the prompt.
+
+## When it's overengineering
+
+Here's the part few people say. **Don't build RAG if:**
+
+- **It fits in the prompt.** If your knowledge base is 20 pages, you don't need a vector
+  database: pass them straight into the context. Current models have huge windows. A whole FAQ
+  file fits with no trouble, and you skip all that infrastructure.
+- **The data barely changes.** If it's stable and small, a fixed (well-cached) prompt is
+  simpler and cheaper.
+- **Your problem is format, not knowledge.** If the model already knows the answer and you
+  just need it in a certain structure, that's prompting, not retrieval.
+
+The honest question before you start: *can I solve this by putting the content directly in the
+prompt?* If the answer is yes, do that. RAG adds a vector database, an indexing pipeline, and
+one more place where things break. It only pays off when the size or the churn of your data
+forces it.
+
+## If you decide you do need it
+
+Start simple. You don't need the fanciest vector database or perfect chunking on day one. A
+basic index, reasonably sized chunks, and retrieving the closest 3–5 gets you surprisingly
+far. Measure **retrieval** quality separately from generation: if the right chunks don't show
+up in the top results, no model will save the answer.
+
+## What I take away
+
+RAG is about giving the model the right data before you ask. It's powerful when you have a lot
+of your own, changing knowledge. But the most valuable decision isn't *how* to do RAG — it's
+*whether* to: often, putting the content directly in the prompt solves the same thing at a
+fraction of the complexity.

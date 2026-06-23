@@ -1,0 +1,158 @@
+---
+title: "Integrar un LLM en Next.js 16: streaming y Server Actions"
+description: "Cómo conectar Claude a una app Next.js 16 sin bloquear la UI: Server Actions, streaming token a token y la frontera correcta entre servidor y cliente."
+date: "2026-06-22"
+tags: ["ai", "nextjs", "claude"]
+cover: "/images/blog/post-01-llm-next.jpg"
+---
+
+# Integrar un LLM en Next.js 16 sin romper el rendimiento
+
+La mayoría de los tutoriales de "IA + Next.js" hacen una cosa que en producción se nota
+mal: esperan a que el modelo termine toda la respuesta y recién entonces la muestran. Con
+un LLM eso son varios segundos de pantalla congelada. La solución no es un truco de UI, es
+**hacer streaming desde el servidor** y dejar que el texto aparezca token a token.
+
+Esta guía es el patrón que uso. Va directo al grano: dónde vive cada cosa en el App Router,
+cómo llamar al modelo y cómo entregar el stream al cliente.
+
+## La frontera servidor/cliente
+
+En el App Router de Next.js 16 los componentes son **React Server Components por defecto**.
+Eso es exactamente lo que quieres para la IA: la clave de API y la llamada al modelo nunca
+deben tocar el navegador. La regla:
+
+- La **llamada al LLM** vive en el servidor (Server Action o route handler).
+- El `"use client"` queda solo para el componente que tiene estado: el input y el render
+  incremental de la respuesta.
+
+Nunca pongas tu API key en un componente cliente ni en una variable `NEXT_PUBLIC_*`.
+
+## El servicio: aislar la llamada al modelo
+
+La lógica compleja va fuera de la UI, en `lib/`. Aquí encapsulo el cliente del modelo y
+expongo un stream:
+
+```ts
+// lib/ai.ts
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic(); // lee ANTHROPIC_API_KEY del entorno
+
+export function streamAnswer(prompt: string) {
+  return client.messages.stream({
+    model: "claude-opus-4-8",
+    max_tokens: 4096,
+    thinking: { type: "adaptive" },
+    messages: [{ role: "user", content: prompt }],
+  });
+}
+```
+
+Dos detalles que importan y que mucha gente copia mal de tutoriales viejos:
+
+- En los modelos actuales (Opus 4.x) el "presupuesto de pensamiento" fijo está deprecado:
+  se usa `thinking: { type: "adaptive" }`, no `budget_tokens`.
+- No mandes `temperature` ni `top_p` en estos modelos; se controlan por prompt.
+
+## El route handler: entregar el stream
+
+Convierto el stream del SDK en un `ReadableStream` web que Next.js puede devolver como
+respuesta HTTP. Esto vive en una Route Handler:
+
+```ts
+// app/api/chat/route.ts
+import { streamAnswer } from "@/lib/ai";
+
+export async function POST(req: Request) {
+  const { prompt } = await req.json();
+
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      const ai = streamAnswer(prompt);
+      ai.on("text", (delta) => {
+        controller.enqueue(encoder.encode(delta));
+      });
+      await ai.finalMessage(); // espera a que termine
+      controller.close();
+    },
+  });
+
+  return new Response(stream, {
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+```
+
+El SDK expone el evento `text` con cada fragmento, y `finalMessage()` resuelve cuando la
+respuesta está completa. No reinvento el bucle de eventos: el helper ya maneja errores y
+cierre.
+
+## El cliente: render incremental
+
+Solo este componente necesita ser de cliente, porque tiene estado y eventos:
+
+```tsx
+// components/Chat.tsx
+"use client";
+
+import { useState } from "react";
+
+export function Chat() {
+  const [answer, setAnswer] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function ask(prompt: string) {
+    setAnswer("");
+    setLoading(true);
+
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      body: JSON.stringify({ prompt }),
+    });
+
+    const reader = res.body!.getReader();
+    const decoder = new TextDecoder();
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      setAnswer((prev) => prev + decoder.decode(value));
+    }
+    setLoading(false);
+  }
+
+  return (
+    <div>
+      <button onClick={() => ask("Explícame los Server Components en una frase")}>
+        Preguntar
+      </button>
+      <p>{answer}</p>
+      {loading && <span>…</span>}
+    </div>
+  );
+}
+```
+
+El texto aparece a medida que llega. Para el usuario la diferencia es enorme: en vez de
+mirar un spinner durante cinco segundos, ve la respuesta escribiéndose.
+
+## ¿Server Action o Route Handler?
+
+Para un chat con streaming prefiero el **Route Handler**: devolver un `ReadableStream` como
+`Response` es el camino más limpio para enviar bytes incrementales al navegador. Las Server
+Actions brillan para mutaciones (guardar, enviar un formulario) donde quieres revalidación
+y no streaming continuo. Si solo necesitas el resultado final de una llamada corta, una
+Server Action que retorna texto está perfecta.
+
+## Lo que me llevo
+
+- El modelo se llama **en el servidor**; el cliente solo pinta.
+- **Streaming** convierte una espera incómoda en una experiencia fluida, con muy poco código.
+- Mantén la llamada al LLM en `lib/`, fuera de la UI, para poder probarla y cambiarla sin
+  tocar componentes.
+
+Ese es el esqueleto. Encima de esto se construye todo lo demás: historial de conversación,
+herramientas, RAG. Pero la base —servidor + streaming— es la que decide si tu app de IA se
+siente lenta o instantánea.

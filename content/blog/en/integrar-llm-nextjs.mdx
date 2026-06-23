@@ -1,0 +1,158 @@
+---
+title: "Integrating an LLM in Next.js 16: streaming and Server Actions"
+description: "How to wire Claude into a Next.js 16 app without freezing the UI: Server Actions, token-by-token streaming, and the right server/client boundary."
+date: "2026-06-22"
+tags: ["ai", "nextjs", "claude"]
+cover: "/images/blog/post-01-llm-next.jpg"
+---
+
+# Integrating an LLM in Next.js 16 without hurting performance
+
+Most "AI + Next.js" tutorials do one thing that looks bad in production: they wait for the
+model to finish the whole response and only then render it. With an LLM that's several
+seconds of a frozen screen. The fix isn't a UI trick — it's **streaming from the server** so
+the text shows up token by token.
+
+This is the pattern I actually use. Straight to the point: where each piece lives in the App
+Router, how to call the model, and how to hand the stream to the client.
+
+## The server/client boundary
+
+In the Next.js 16 App Router, components are **React Server Components by default**. That's
+exactly what you want for AI: the API key and the model call must never reach the browser.
+The rule:
+
+- The **LLM call** lives on the server (a Server Action or route handler).
+- `"use client"` is only for the component that holds state: the input and the incremental
+  rendering of the answer.
+
+Never put your API key in a client component or a `NEXT_PUBLIC_*` variable.
+
+## The service: isolate the model call
+
+Complex logic stays out of the UI, in `lib/`. Here I wrap the model client and expose a
+stream:
+
+```ts
+// lib/ai.ts
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic(); // reads ANTHROPIC_API_KEY from the environment
+
+export function streamAnswer(prompt: string) {
+  return client.messages.stream({
+    model: "claude-opus-4-8",
+    max_tokens: 4096,
+    thinking: { type: "adaptive" },
+    messages: [{ role: "user", content: prompt }],
+  });
+}
+```
+
+Two details that matter, and that many people copy wrong from old tutorials:
+
+- On current models (Opus 4.x) a fixed "thinking budget" is deprecated: use
+  `thinking: { type: "adaptive" }`, not `budget_tokens`.
+- Don't send `temperature` or `top_p` on these models; steer behavior through the prompt.
+
+## The route handler: deliver the stream
+
+I turn the SDK stream into a web `ReadableStream` that Next.js can return as an HTTP
+response. This lives in a Route Handler:
+
+```ts
+// app/api/chat/route.ts
+import { streamAnswer } from "@/lib/ai";
+
+export async function POST(req: Request) {
+  const { prompt } = await req.json();
+
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      const ai = streamAnswer(prompt);
+      ai.on("text", (delta) => {
+        controller.enqueue(encoder.encode(delta));
+      });
+      await ai.finalMessage(); // wait until it finishes
+      controller.close();
+    },
+  });
+
+  return new Response(stream, {
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+```
+
+The SDK exposes a `text` event for each chunk, and `finalMessage()` resolves when the
+response is complete. I don't reinvent the event loop: the helper already handles errors and
+closing.
+
+## The client: incremental rendering
+
+Only this component needs to be a client component, because it has state and events:
+
+```tsx
+// components/Chat.tsx
+"use client";
+
+import { useState } from "react";
+
+export function Chat() {
+  const [answer, setAnswer] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function ask(prompt: string) {
+    setAnswer("");
+    setLoading(true);
+
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      body: JSON.stringify({ prompt }),
+    });
+
+    const reader = res.body!.getReader();
+    const decoder = new TextDecoder();
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      setAnswer((prev) => prev + decoder.decode(value));
+    }
+    setLoading(false);
+  }
+
+  return (
+    <div>
+      <button onClick={() => ask("Explain Server Components in one sentence")}>
+        Ask
+      </button>
+      <p>{answer}</p>
+      {loading && <span>…</span>}
+    </div>
+  );
+}
+```
+
+The text appears as it arrives. For the user the difference is huge: instead of staring at a
+spinner for five seconds, they watch the answer being written.
+
+## Server Action or Route Handler?
+
+For a streaming chat I prefer the **Route Handler**: returning a `ReadableStream` as a
+`Response` is the cleanest way to push incremental bytes to the browser. Server Actions shine
+for mutations (save, submit a form) where you want revalidation, not continuous streaming. If
+you only need the final result of a short call, a Server Action that returns text is perfectly
+fine.
+
+## What I take away
+
+- The model is called **on the server**; the client only paints.
+- **Streaming** turns an awkward wait into a smooth experience with very little code.
+- Keep the LLM call in `lib/`, out of the UI, so you can test and swap it without touching
+  components.
+
+That's the skeleton. Everything else builds on top: conversation history, tools, RAG. But the
+foundation — server + streaming — is what decides whether your AI app feels sluggish or
+instant.

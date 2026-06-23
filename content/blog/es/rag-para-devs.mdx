@@ -1,0 +1,88 @@
+---
+title: "RAG para devs: qué es, cuándo sí y cuándo es sobre-ingeniería"
+description: "Retrieval-Augmented Generation explicado sin humo: cómo funciona, cuándo resuelve un problema real y cuándo te estás complicando la vida."
+date: "2026-06-12"
+tags: ["ai", "rag"]
+cover: "/images/blog/post-03-rag-devs.jpg"
+---
+
+# RAG para devs
+
+RAG —Retrieval-Augmented Generation— es una de esas siglas que suenan más complicadas de lo
+que son. La idea cabe en una frase: **antes de pedirle algo al modelo, le pasas los
+documentos relevantes para que responda con base en ellos** en vez de con su conocimiento
+general. Eso es todo. El resto son detalles de implementación.
+
+Esta guía explica cómo funciona y, más importante, **cuándo no usarlo**. Porque la mitad de
+los proyectos que montan RAG no lo necesitaban.
+
+## El problema que resuelve
+
+Un LLM sabe mucho del mundo, pero no sabe nada de **tu** mundo: tu documentación interna, tus
+tickets, tu base de conocimiento. Y aunque lo supiera, su conocimiento tiene fecha de corte.
+Si le preguntas "¿cuál es nuestra política de reembolsos?", inventa una respuesta plausible
+pero falsa.
+
+RAG arregla esto sin reentrenar nada: recuperas los fragmentos relevantes de tus datos y los
+incluyes en el prompt. El modelo responde leyendo, no recordando.
+
+## Cómo funciona, en cuatro pasos
+
+1. **Indexar**: partes tus documentos en fragmentos (chunks) y, para cada uno, calculas un
+   *embedding* —un vector que representa su significado—. Los guardas en una base vectorial.
+2. **Recuperar**: cuando llega una pregunta, calculas su embedding y buscas los fragmentos
+   con vectores más parecidos. Esos son los más relevantes semánticamente.
+3. **Aumentar**: metes esos fragmentos en el prompt, junto con la pregunta.
+4. **Generar**: el modelo responde usando ese contexto.
+
+```text
+pregunta del usuario
+      │
+      ▼
+ [embedding] ──► búsqueda en base vectorial ──► top 3 fragmentos
+                                                       │
+                                                       ▼
+              prompt = fragmentos + pregunta ──► modelo ──► respuesta
+```
+
+El truco no está en la generación —eso es una llamada normal al modelo— sino en **recuperar
+bien**. Si recuperas los fragmentos equivocados, el modelo responde con basura, pero con
+total seguridad.
+
+## Cuándo RAG es la respuesta correcta
+
+- Tienes **muchos** datos propios que cambian seguido (documentación, catálogos, tickets).
+- Necesitas que las respuestas **citen** la fuente real.
+- El corpus es demasiado grande para meterlo entero en el prompt.
+
+## Cuándo es sobre-ingeniería
+
+Aquí está la parte que pocos dicen. **No montes RAG si:**
+
+- **Cabe en el prompt.** Si tu base de conocimiento son 20 páginas, no necesitas una base
+  vectorial: pásalas directo en el contexto. Los modelos actuales tienen ventanas enormes.
+  Un archivo de FAQ entero entra sin problema, y te ahorras toda la infraestructura.
+- **Los datos casi no cambian.** Si es información estable y pequeña, el prompt fijo (bien
+  cacheado) es más simple y más barato.
+- **Tu problema es de formato, no de conocimiento.** Si el modelo ya sabe la respuesta y solo
+  necesitas que la dé en cierta estructura, eso es prompting, no retrieval.
+
+La pregunta honesta antes de empezar: *¿puedo resolver esto metiendo el contenido directo en
+el prompt?* Si la respuesta es sí, hazlo. RAG agrega una base vectorial, un pipeline de
+indexación y un punto más donde las cosas fallan. Solo vale la pena cuando el tamaño o el
+cambio de los datos te obligan.
+
+## Si decides que sí lo necesitas
+
+Empieza simple. No necesitas la base vectorial más sofisticada ni chunking perfecto el día
+uno. Un índice básico, fragmentos de tamaño razonable y recuperar los 3-5 más cercanos te
+lleva sorprendentemente lejos. Mide la calidad de la **recuperación** por separado de la
+generación: si los fragmentos correctos no aparecen en el top, ningún modelo va a salvar la
+respuesta.
+
+## Lo que me llevo
+
+RAG es darle al modelo los datos correctos antes de preguntar. Es potente cuando tienes
+mucho conocimiento propio y cambiante. Pero la decisión más valiosa no es *cómo* hacer RAG,
+sino *si* hacerlo: muchas veces meter el contenido directo en el prompt resuelve lo mismo con
+una fracción de la complejidad.

@@ -1,0 +1,92 @@
+---
+title: "Effective prompting for developers: from loose prompt to system"
+description: "Stop writing prompts on intuition and start designing them like software: structure, context, examples, and evaluation."
+date: "2026-06-18"
+tags: ["ai", "prompting"]
+cover: "/images/blog/post-02-prompt-developers.jpg"
+---
+
+# Effective prompting for developers
+
+There's a big difference between "writing a prompt" and "designing a prompt." The first is
+what we do in the chat: one sentence, let's see what comes out. The second is what you need
+when that prompt lives inside your product and has to deliver consistent results thousands of
+times.
+
+As a developer you already have the right instinct: a prompt is **input to a system**, not a
+casual conversation. These are the practices that make the most difference once you treat it
+that way.
+
+## 1. Structure beats verbosity
+
+A long prompt isn't a good prompt. A **structured** one is. Separate the parts so the model
+knows what each thing is:
+
+```text
+Role: you are a code reviewer looking for security bugs.
+Task: review the diff and list only real problems.
+Format: a list; each item with file, line, and severity.
+Constraint: don't comment on style or naming.
+
+Diff:
+<code here>
+```
+
+That separation — role, task, format, constraint, data — does more for quality than any
+adjective. The model stops guessing your intent.
+
+## 2. Context goes last, stable content goes first
+
+If you'll reuse the same preamble across many calls (fixed instructions, examples), put it at
+the **start** and leave what changes — the question, the user's data — at the **end**. This
+isn't just tidiness: it's what lets prompt caching work, making each call cheaper and faster.
+A prompt whose beginning changes on every request can't be cached.
+
+## 3. Show examples, not just rules
+
+Saying "respond concisely" is weak. Showing **one example** of the output you want is strong.
+Positive examples (do this) work better than prohibitions (don't do that):
+
+```text
+Example of a good response:
+{ "intent": "refund", "confidence": 0.92 }
+```
+
+The model imitates the format and tone of an example far better than it follows an abstract
+description.
+
+## 4. Ask for structured output when you'll parse it
+
+If your code is going to read the response, don't hand-parse free text. Ask for JSON with a
+schema and validate it. When the data has a fixed shape — a classification, an extraction — a
+strict schema saves you a whole layer of brittle parsing. Treat the model's output the way you
+always treated user input: validate at the boundary.
+
+## 5. Be literal about what you DON'T want
+
+Current models follow instructions more literally than earlier generations. That means two
+things. The good: if you say exactly what to do, it does it. What changed: the aggressive
+prompts of the past — "CRITICAL: you MUST always…" — now overreact. Dial it back. "Use the
+tool when it helps" works better than "ALWAYS use the tool."
+
+## 6. Iterate with an evaluation, not vibes
+
+This is what separates hobby prompting from production prompting. Don't tune a prompt by
+looking at one response and saying "looks good." Build a small set of cases — real inputs with
+their expected output — and measure it. When you change the prompt, run the set and see if it
+got better or worse. It's exactly a test loop, applied to natural language.
+
+```text
+case 1: "I want my money back"     → intent: refund
+case 2: "how do I change my password?" → intent: account
+case 3: "your app is garbage"      → intent: complaint
+```
+
+Ten cases like these tell you more than a hundred eyeball reads.
+
+## What I take away
+
+The jump in quality doesn't come from finding "the magic words." It comes from treating the
+prompt as software: structured, with ordered context, with examples, with validated output,
+and with an evaluation that tells you whether you're improving. Everything else is intuition,
+and intuition doesn't scale to thousands of requests.

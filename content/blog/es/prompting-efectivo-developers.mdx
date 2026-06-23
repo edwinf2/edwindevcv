@@ -1,0 +1,92 @@
+---
+title: "Prompting efectivo para developers: del prompt suelto al sistema"
+description: "Dejar de escribir prompts por intuición y empezar a diseñarlos como una pieza de software: estructura, contexto, ejemplos y evaluación."
+date: "2026-06-18"
+tags: ["ai", "prompting"]
+cover: "/images/blog/post-02-prompt-developers.jpg"
+---
+
+# Prompting efectivo para developers
+
+Hay una diferencia grande entre "escribir un prompt" y "diseñar un prompt". El primero es lo
+que hacemos en el chat: una frase, a ver qué sale. El segundo es lo que necesitas cuando ese
+prompt vive dentro de tu producto y tiene que dar resultados consistentes miles de veces.
+
+Como developer ya tienes la intuición correcta: un prompt es **entrada de un sistema**, no
+una conversación casual. Estas son las prácticas que más diferencia hacen cuando lo tratas
+así.
+
+## 1. Estructura antes que verbosidad
+
+Un prompt largo no es un buen prompt. Uno **estructurado** sí. Separa las partes para que el
+modelo sepa qué es cada cosa:
+
+```text
+Rol: eres un revisor de código que busca bugs de seguridad.
+Tarea: revisa el diff y lista solo problemas reales.
+Formato: una lista; cada item con archivo, línea y severidad.
+Restricción: no comentes estilo ni naming.
+
+Diff:
+<código aquí>
+```
+
+Esa separación —rol, tarea, formato, restricción, datos— hace más por la calidad que
+cualquier adjetivo. El modelo deja de adivinar tu intención.
+
+## 2. El contexto va al final, lo estable al principio
+
+Si vas a reutilizar el mismo preámbulo en muchas llamadas (instrucciones fijas, ejemplos),
+ponlo **al inicio** y deja lo que cambia —la pregunta, el dato del usuario— **al final**.
+Esto no es solo orden: es lo que permite que el caché de prompt funcione y que cada llamada
+sea más barata y rápida. Un prompt cuyo principio cambia en cada request no se puede cachear.
+
+## 3. Muestra ejemplos, no solo reglas
+
+Decir "responde de forma concisa" es débil. Mostrar **un ejemplo** de la salida que quieres
+es fuerte. Los ejemplos positivos (esto sí) funcionan mejor que las prohibiciones (esto no):
+
+```text
+Ejemplo de buena respuesta:
+{ "intent": "refund", "confidence": 0.92 }
+```
+
+El modelo imita formato y tono de un ejemplo mucho mejor de lo que sigue una descripción
+abstracta.
+
+## 4. Pide salida estructurada cuando la vas a parsear
+
+Si tu código va a leer la respuesta, no la parsees a mano de texto libre. Pide JSON con un
+esquema y valida. Cuando el dato tiene forma fija —una clasificación, una extracción— un
+esquema estricto te ahorra una capa entera de parsing frágil. Trata la salida del modelo
+como trataste siempre la entrada del usuario: con validación en la frontera.
+
+## 5. Sé literal con lo que NO quieres
+
+Los modelos actuales siguen las instrucciones de forma más literal que las generaciones
+anteriores. Eso significa dos cosas. Lo bueno: si dices exactamente qué hacer, lo hace. Lo
+que cambia: los prompts agresivos del pasado —"CRÍTICO: SIEMPRE debes…"— ahora sobreactúan.
+Baja el tono. "Usa la herramienta cuando ayude" funciona mejor que "SIEMPRE usa la
+herramienta".
+
+## 6. Itera con una evaluación, no con vibras
+
+Esto es lo que separa el prompting de hobby del de producción. No ajustes un prompt mirando
+una respuesta y diciendo "se ve bien". Arma un set pequeño de casos —entradas reales con la
+salida esperada— y mídelo. Cuando cambias el prompt, corres el set y ves si mejoró o
+empeoró. Es exactamente el ciclo de un test, aplicado a lenguaje natural.
+
+```text
+caso 1: "quiero mi dinero de vuelta"  → intent: refund
+caso 2: "¿cómo cambio mi clave?"      → intent: account
+caso 3: "su app es una basura"        → intent: complaint
+```
+
+Diez casos así te dicen más que cien lecturas a ojo.
+
+## Lo que me llevo
+
+El salto de calidad no viene de encontrar "las palabras mágicas". Viene de tratar el prompt
+como software: estructurado, con contexto ordenado, con ejemplos, con salida validada y con
+una evaluación que te dice si vas mejorando. Lo demás es intuición, y la intuición no escala
+a miles de requests.
